@@ -32,3 +32,4 @@ class CheckAdmin
         return redirect()->route('login')->with('error', 'Por favor, inicia sesión para acceder.');
     }
 }
+
