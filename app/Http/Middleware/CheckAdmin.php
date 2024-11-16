@@ -29,7 +29,7 @@ class CheckAdmin
         }
 
         // Si el usuario no está autenticado, redirigir al login
-        return redirect()->route('login')->with('error', 'Por favor, inicia sesión para acceder.');
+        return redirect()->route('login')->with('error', 'Por favor, inicia sesión para acceder.')
     }
 }
 
