@@ -14,10 +14,17 @@ return new class extends Migration
         Schema::create('orders', function (Blueprint $table) {
             $table->id();
             $table->unsignedBigInteger('user_id'); // Relación con la tabla de usuarios
-            $table->decimal('total', 10, 2);
+            $table->string('order_number')->unique(); // Número único de orden
+            $table->decimal('total', 10, 2); // Total de la orden
+            $table->enum('status', ['pending', 'completed', 'cancelled'])->default('pending'); // Estado de la orden
             $table->timestamps();
 
+            // Llave foránea
             $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
+
+            // Índices
+            $table->index('user_id');
+            $table->index('status');
         });
     }
 
@@ -29,3 +36,4 @@ return new class extends Migration
         Schema::dropIfExists('orders');
     }
 };
+

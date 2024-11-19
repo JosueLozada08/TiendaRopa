@@ -3,13 +3,20 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
+use App\Models\Product;
+use App\Models\Category;
 
 class DashboardController extends Controller
 {
     public function index()
     {
-        // Retorna la vista principal del panel de administrador
-        return view('admin.dashboard');
+        // Datos simulados o consulta a la base de datos
+        $totalProducts = Product::count(); // Número total de productos
+        $totalCategories = Category::count(); // Número total de categorías
+
+        return view('admin.dashboard', [
+            'totalProducts' => $totalProducts,
+            'totalCategories' => $totalCategories,
+        ]);
     }
 }
-

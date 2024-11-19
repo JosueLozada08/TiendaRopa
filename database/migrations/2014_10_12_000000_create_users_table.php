@@ -11,27 +11,22 @@ class CreateUsersTable extends Migration
      *
      * @return void
      */
-    public function up()
-    {
-        Schema::create('users', function (Blueprint $table) {
-            $table->id();
-            $table->string('name');
-            $table->string('email')->unique();
-            $table->timestamp('email_verified_at')->nullable();
-            $table->string('password');
-            $table->boolean('is_admin')->default(false); // Campo adicional para distinguir admins
-            $table->rememberToken();
-            $table->timestamps();
+    public function up(): void
+{
+    if (!Schema::hasColumn('users', 'is_admin')) {
+        Schema::table('users', function (Blueprint $table) {
+            $table->boolean('is_admin')->default(false)->after('password');
         });
     }
+}
 
-    /**
-     * Reverse the migrations.
-     *
-     * @return void
-     */
-    public function down()
-    {
-        Schema::dropIfExists('users');
+public function down(): void
+{
+    if (Schema::hasColumn('users', 'is_admin')) {
+        Schema::table('users', function (Blueprint $table) {
+            $table->dropColumn('is_admin');
+        });
     }
+}
+
 }
