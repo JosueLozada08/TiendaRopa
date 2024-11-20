@@ -10,25 +10,27 @@ use Illuminate\Http\Request;
 class ProductController extends Controller
 {
     /**
-     * Lista todos los productos.
+     * Mostrar la lista de productos.
      */
     public function index()
     {
         $products = Product::with('category')->get();
+
         return view('admin.products.index', compact('products'));
     }
 
     /**
-     * Muestra el formulario para crear un nuevo producto.
+     * Mostrar el formulario para crear un nuevo producto.
      */
     public function create()
     {
-        $categories = Category::all(); // Obtiene todas las categorías
-        return view('admin.products.edit', compact('categories'));
+        $categories = Category::all();
+
+        return view('admin.products.form', compact('categories'));
     }
 
     /**
-     * Almacena un nuevo producto en la base de datos.
+     * Almacenar un nuevo producto.
      */
     public function store(Request $request)
     {
@@ -37,6 +39,7 @@ class ProductController extends Controller
             'description' => 'nullable|string',
             'price' => 'required|numeric|min:0',
             'category_id' => 'required|exists:categories,id',
+            'stock' => 'required|integer|min:0',
         ]);
 
         Product::create($validated);
@@ -46,16 +49,17 @@ class ProductController extends Controller
     }
 
     /**
-     * Muestra el formulario para editar un producto existente.
+     * Mostrar el formulario para editar un producto.
      */
     public function edit(Product $product)
     {
-        $categories = Category::all(); // Obtiene todas las categorías
+        $categories = Category::all();
+
         return view('admin.products.edit', compact('product', 'categories'));
     }
 
     /**
-     * Actualiza un producto existente en la base de datos.
+     * Actualizar un producto.
      */
     public function update(Request $request, Product $product)
     {
@@ -64,6 +68,7 @@ class ProductController extends Controller
             'description' => 'nullable|string',
             'price' => 'required|numeric|min:0',
             'category_id' => 'required|exists:categories,id',
+            'stock' => 'required|integer|min:0',
         ]);
 
         $product->update($validated);
@@ -73,7 +78,7 @@ class ProductController extends Controller
     }
 
     /**
-     * Elimina un producto de la base de datos.
+     * Eliminar un producto.
      */
     public function destroy(Product $product)
     {
@@ -83,3 +88,4 @@ class ProductController extends Controller
             ->with('success', 'Producto eliminado correctamente.');
     }
 }
+ 

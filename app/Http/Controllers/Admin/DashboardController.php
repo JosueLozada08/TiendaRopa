@@ -15,23 +15,37 @@ class DashboardController extends Controller
         $totalCategories = Category::count();
         $totalOrders = Order::count();
         $totalRevenue = Order::where('status', 'completado')->sum('total');
-
-        // Datos para el gráfico
-        $monthlyRevenue = Order::selectRaw('MONTH(created_at) as month, SUM(total) as total')
+    
+        // Ingresos mensuales del año actual
+        $currentYearRevenue = Order::selectRaw('MONTH(created_at) as month, SUM(total) as total')
             ->where('status', 'completado')
+            ->whereYear('created_at', date('Y'))
             ->groupBy('month')
             ->orderBy('month')
             ->get()
             ->mapWithKeys(function ($item) {
                 return [date('F', mktime(0, 0, 0, $item->month, 1)) => $item->total];
             });
-
+    
+        // Ingresos mensuales del año pasado
+        $lastYearRevenue = Order::selectRaw('MONTH(created_at) as month, SUM(total) as total')
+            ->where('status', 'completado')
+            ->whereYear('created_at', date('Y') - 1)
+            ->groupBy('month')
+            ->orderBy('month')
+            ->get()
+            ->mapWithKeys(function ($item) {
+                return [date('F', mktime(0, 0, 0, $item->month, 1)) => $item->total];
+            });
+    
         return view('admin.dashboard', compact(
             'totalProducts',
             'totalCategories',
             'totalOrders',
             'totalRevenue',
-            'monthlyRevenue'
+            'currentYearRevenue',
+            'lastYearRevenue'
         ));
     }
+    
 }

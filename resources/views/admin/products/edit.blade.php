@@ -68,6 +68,22 @@
                     @enderror
                 </div>
 
+                <!-- Stock -->
+                <div class="mb-3">
+                    <label for="stock" class="form-label">Stock</label>
+                    <input 
+                        type="number" 
+                        class="form-control @error('stock') is-invalid @enderror" 
+                        id="stock" 
+                        name="stock" 
+                        value="{{ old('stock', $product->stock ?? 0) }}" 
+                        min="0"
+                    >
+                    @error('stock')
+                        <div class="invalid-feedback">{{ $message }}</div>
+                    @enderror
+                </div>
+
                 <!-- Categoría -->
                 <div class="mb-3">
                     <label for="category_id" class="form-label">Categoría</label>

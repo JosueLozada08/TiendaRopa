@@ -26,6 +26,8 @@
     <div class="container mt-4">
         @yield('content')
     </div>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.0.1"></script>
+
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
 </body>

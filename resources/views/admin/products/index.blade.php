@@ -1,24 +1,28 @@
 @extends('layouts.app')
 
-@section('title', 'Administrar Productos')
+@section('title', 'Lista de Productos')
 
 @section('content')
 <div class="container mt-4">
-    <h1 class="mb-4">Administrar Productos</h1>
-    <p class="text-muted">Añade, edita o elimina productos de la tienda.</p>
+    <h1 class="mb-4">Lista de Productos</h1>
 
-    <div class="d-flex justify-content-between align-items-center mb-3">
-        <h3 class="mb-0">Lista de Productos</h3>
-        <a href="{{ route('admin.products.create') }}" class="btn btn-primary">Crear Producto</a>
-    </div>
+    @if (session('success'))
+        <div class="alert alert-success">
+            {{ session('success') }}
+        </div>
+    @endif
 
-    <table class="table table-bordered table-hover">
-        <thead class="table-dark">
+    <a href="{{ route('admin.products.create') }}" class="btn btn-primary mb-3">Crear Producto</a>
+
+    <table class="table table-bordered">
+        <thead>
             <tr>
                 <th>ID</th>
                 <th>Nombre</th>
                 <th>Descripción</th>
                 <th>Precio</th>
+                <th>Stock</th>
+                <th>Categoría</th>
                 <th>Acciones</th>
             </tr>
         </thead>
@@ -29,6 +33,8 @@
                     <td>{{ $product->name }}</td>
                     <td>{{ $product->description }}</td>
                     <td>${{ number_format($product->price, 2) }}</td>
+                    <td>{{ $product->stock }}</td>
+                    <td>{{ $product->category->name ?? 'Sin categoría' }}</td>
                     <td>
                         <a href="{{ route('admin.products.edit', $product->id) }}" class="btn btn-warning btn-sm">Editar</a>
                         <form action="{{ route('admin.products.destroy', $product->id) }}" method="POST" style="display:inline;">
@@ -40,7 +46,7 @@
                 </tr>
             @empty
                 <tr>
-                    <td colspan="5" class="text-center">No hay productos disponibles.</td>
+                    <td colspan="7" class="text-center">No hay productos disponibles.</td>
                 </tr>
             @endforelse
         </tbody>
