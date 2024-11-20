@@ -1,124 +1,69 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Panel de Administración</title>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
-</head>
-<body>
-    <!-- Panel de Navegación -->
-    <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
-        <div class="container-fluid">
-            <a class="navbar-brand" href="#">Admin Panel</a>
-            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
-                <span class="navbar-toggler-icon"></span>
-            </button>
-            <div class="collapse navbar-collapse" id="navbarNav">
-                <ul class="navbar-nav">
-                    <li class="nav-item">
-                        <a class="nav-link active" aria-current="page" href="{{ route('admin.dashboard') }}">Dashboard</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="{{ route('admin.orders.index') }}">Órdenes</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="{{ route('admin.products.index') }}">Productos</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="{{ route('admin.categories.index') }}">Categorías</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="{{ route('admin.clients.index') }}">Clientes</a>
-                    </li>
-                </ul>
-                <ul class="navbar-nav ms-auto">
-                    <li class="nav-item">
-                        <a class="nav-link btn btn-danger text-white" href="{{ route('logout') }}">Cerrar Sesión</a>
-                    </li>
-                </ul>
-            </div>
-        </div>
-    </nav>
+@extends('layouts.app')
 
-    <!-- Contenido Principal -->
-    <div class="container mt-5">
-        <h2 class="text-center mb-4">Bienvenido al Panel de Administración</h2>
-        <p class="text-center">Desde este panel puedes gestionar todos los aspectos de la tienda en línea.</p>
+@section('title', 'Dashboard')
 
-        <!-- Tarjetas de Resumen -->
-        <div class="row text-center mb-4">
-            <div class="col-md-4">
-                <div class="card shadow-sm">
-                    <div class="card-body">
-                        <h5 class="card-title">Total Productos</h5>
-                        <p class="card-text display-4">{{ $totalProducts }}</p>
-                    </div>
+@section('content')
+<div class="container-fluid px-4">
+    <h1 class="mt-4">Dashboard de Administración</h1>
+    <p class="text-muted">Desde aquí puedes gestionar los módulos principales de la tienda.</p>
+
+    <!-- Tarjetas de estadísticas -->
+    <div class="row">
+        <!-- Total de Productos -->
+        <div class="col-xl-3 col-md-6 mb-4">
+            <div class="card bg-primary text-white shadow">
+                <div class="card-body">
+                    <h5>Total Productos</h5>
+                    <h2>{{ $totalProducts }}</h2>
                 </div>
-            </div>
-            <div class="col-md-4">
-                <div class="card shadow-sm">
-                    <div class="card-body">
-                        <h5 class="card-title">Total Categorías</h5>
-                        <p class="card-text display-4">{{ $totalCategories }}</p>
-                    </div>
-                </div>
-            </div>
-            <div class="col-md-4">
-                <div class="card shadow-sm">
-                    <div class="card-body">
-                        <h5 class="card-title">Total Órdenes</h5>
-                        <p class="card-text display-4">{{ $totalOrders }}</p>
-                    </div>
+                <div class="card-footer d-flex align-items-center justify-content-between">
+                    <a href="{{ route('admin.products.index') }}" class="small text-white stretched-link">Ver productos</a>
+                    <div class="small text-white"><i class="fas fa-arrow-right"></i></div>
                 </div>
             </div>
         </div>
 
-        <!-- Tarjetas para Gestión -->
-        <div class="row text-center">
-            <div class="col-md-3">
-                <div class="card shadow-sm">
-                    <div class="card-header">Productos</div>
-                    <div class="card-body">
-                        <h5 class="card-title">Administrar Productos</h5>
-                        <p class="card-text">Añade, edita o elimina productos de la tienda.</p>
-                        <a href="{{ route('admin.products.index') }}" class="btn btn-primary">Ver Productos</a>
-                    </div>
+        <!-- Total de Categorías -->
+        <div class="col-xl-3 col-md-6 mb-4">
+            <div class="card bg-success text-white shadow">
+                <div class="card-body">
+                    <h5>Total Categorías</h5>
+                    <h2>{{ $totalCategories }}</h2>
+                </div>
+                <div class="card-footer d-flex align-items-center justify-content-between">
+                    <a href="{{ route('admin.categories.index') }}" class="small text-white stretched-link">Ver categorías</a>
+                    <div class="small text-white"><i class="fas fa-arrow-right"></i></div>
                 </div>
             </div>
-            <div class="col-md-3">
-                <div class="card shadow-sm">
-                    <div class="card-header">Categorías</div>
-                    <div class="card-body">
-                        <h5 class="card-title">Administrar Categorías</h5>
-                        <p class="card-text">Organiza los productos en diferentes categorías.</p>
-                        <a href="{{ route('admin.categories.index') }}" class="btn btn-secondary">Ver Categorías</a>
-                    </div>
+        </div>
+
+        <!-- Total de Órdenes -->
+        <div class="col-xl-3 col-md-6 mb-4">
+            <div class="card bg-warning text-white shadow">
+                <div class="card-body">
+                    <h5>Total Órdenes</h5>
+                    <h2>{{ $totalOrders }}</h2>
+                </div>
+                <div class="card-footer d-flex align-items-center justify-content-between">
+                    <a href="{{ route('admin.orders.index') }}" class="small text-white stretched-link">Ver órdenes</a>
+                    <div class="small text-white"><i class="fas fa-arrow-right"></i></div>
                 </div>
             </div>
-            <div class="col-md-3">
-                <div class="card shadow-sm">
-                    <div class="card-header">Órdenes</div>
-                    <div class="card-body">
-                        <h5 class="card-title">Administrar Órdenes</h5>
-                        <p class="card-text">Revisa y gestiona los pedidos de los clientes.</p>
-                        <a href="{{ route('admin.orders.index') }}" class="btn btn-success">Ver Órdenes</a>
-                    </div>
+        </div>
+
+        <!-- Total de Ingresos -->
+        <div class="col-xl-3 col-md-6 mb-4">
+            <div class="card bg-danger text-white shadow">
+                <div class="card-body">
+                    <h5>Total Ingresos</h5>
+                    <h2>${{ number_format($totalRevenue, 2) }}</h2>
                 </div>
-            </div>
-            <div class="col-md-3">
-                <div class="card shadow-sm">
-                    <div class="card-header">Clientes</div>
-                    <div class="card-body">
-                        <h5 class="card-title">Administrar Clientes</h5>
-                        <p class="card-text">Gestiona la información de tus clientes.</p>
-                        <a href="{{ route('admin.clients.index') }}" class="btn btn-info">Ver Clientes</a>
-                    </div>
+                <div class="card-footer d-flex align-items-center justify-content-between">
+                    <a href="{{ route('admin.orders.index') }}" class="small text-white stretched-link">Ver órdenes</a>
+                    <div class="small text-white"><i class="fas fa-arrow-right"></i></div>
                 </div>
             </div>
         </div>
     </div>
-
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
-</body>
-</html>
+</div>
+@endsection

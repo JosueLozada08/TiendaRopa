@@ -21,12 +21,14 @@ class CategoryController extends Controller
 
     public function store(Request $request)
     {
-        $request->validate([
-            'name' => 'required|unique:categories,name',
+        $validated = $request->validate([
+            'name' => 'required|string|max:255',
         ]);
 
-        Category::create($request->all());
-        return redirect()->route('admin.categories.index')->with('success', 'Categoría creada');
+        Category::create($validated);
+
+        return redirect()->route('admin.categories.index')
+            ->with('success', 'Categoría creada correctamente.');
     }
 
     public function edit(Category $category)
@@ -36,17 +38,21 @@ class CategoryController extends Controller
 
     public function update(Request $request, Category $category)
     {
-        $request->validate([
-            'name' => 'required|unique:categories,name,' . $category->id,
+        $validated = $request->validate([
+            'name' => 'required|string|max:255',
         ]);
 
-        $category->update($request->all());
-        return redirect()->route('admin.categories.index')->with('success', 'Categoría actualizada');
+        $category->update($validated);
+
+        return redirect()->route('admin.categories.index')
+            ->with('success', 'Categoría actualizada correctamente.');
     }
 
     public function destroy(Category $category)
     {
         $category->delete();
-        return redirect()->route('admin.categories.index')->with('success', 'Categoría eliminada');
+
+        return redirect()->route('admin.categories.index')
+            ->with('success', 'Categoría eliminada correctamente.');
     }
 }

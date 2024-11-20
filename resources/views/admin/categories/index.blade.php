@@ -1,16 +1,37 @@
-<!DOCTYPE html>
-<html lang="es">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Categorías</title>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet">
-</head>
-<body>
-    <div class="container mt-5">
-        <h2>Administrar Categorías</h2>
-        <p>Organiza los productos en diferentes categorías.</p>
-        <!-- Aquí puedes agregar una tabla o un formulario -->
-    </div>
-</body>
-</html>
+@extends('layouts.app')
+
+@section('title', 'Categorías')
+
+@section('content')
+<h1>Lista de Categorías</h1>
+<a href="{{ route('admin.categories.create') }}" class="btn btn-primary mb-3">Crear Categoría</a>
+<table class="table table-bordered">
+    <thead>
+        <tr>
+            <th>ID</th>
+            <th>Nombre</th>
+            <th>Acciones</th>
+        </tr>
+    </thead>
+    <tbody>
+        @forelse ($categories as $category)
+            <tr>
+                <td>{{ $category->id }}</td>
+                <td>{{ $category->name }}</td>
+                <td>
+                    <a href="{{ route('admin.categories.edit', $category->id) }}" class="btn btn-warning btn-sm">Editar</a>
+                    <form action="{{ route('admin.categories.destroy', $category->id) }}" method="POST" style="display:inline;">
+                        @csrf
+                        @method('DELETE')
+                        <button type="submit" class="btn btn-danger btn-sm">Eliminar</button>
+                    </form>
+                </td>
+            </tr>
+        @empty
+            <tr>
+                <td colspan="3">No hay categorías.</td>
+            </tr>
+        @endforelse
+    </tbody>
+</table>
+@endsection

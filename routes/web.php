@@ -4,39 +4,29 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Auth\LoginController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\Admin\DashboardController as AdminDashboardController;
-use App\Http\Controllers\Admin\OrderController;
 use App\Http\Controllers\Admin\ProductController;
 use App\Http\Controllers\Admin\CategoryController;
-use App\Http\Controllers\Admin\ClientController;
+use App\Http\Controllers\Admin\OrderController;
 
-// Ruta de bienvenida
+// Ruta principal de bienvenida
 Route::get('/', function () {
     return view('welcome');
 })->name('home');
 
 // Rutas de autenticación
-Route::get('/login', [LoginController::class, 'showLoginForm'])->name('login');
-Route::post('/login', [LoginController::class, 'login']);
-Route::post('/logout', [LoginController::class, 'logout'])->name('logout');
+Route::get('/login', [LoginController::class, 'showLoginForm'])->name('login'); // Formulario de inicio de sesión
+Route::post('/login', [LoginController::class, 'login']); // Proceso de inicio de sesión
+Route::post('/logout', [LoginController::class, 'logout'])->name('logout'); // Cierre de sesión
 
-// Ruta personalizada para cerrar sesión con GET (opcional)
-Route::get('/logout', function () {
-    auth()->logout();
-    return redirect()->route('login')->with('success', 'Has cerrado sesión correctamente.');
-})->name('logout_get');
-
-// Rutas para usuarios regulares (dashboard general)
+// Dashboard para usuarios regulares
 Route::middleware(['auth'])->group(function () {
     Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
 });
 
-// Rutas para administradores (dashboard y gestión de recursos)
-Route::prefix('admin')->name('admin.')->middleware(['auth', 'admin'])->group(function () {
+// Rutas para administradores
+Route::prefix('admin')->name('admin.')->middleware(['auth'])->group(function () {
     // Dashboard de administración
     Route::get('/dashboard', [AdminDashboardController::class, 'index'])->name('dashboard');
-
-    // Gestión de órdenes
-    Route::resource('orders', OrderController::class);
 
     // Gestión de productos
     Route::resource('products', ProductController::class);
@@ -44,6 +34,9 @@ Route::prefix('admin')->name('admin.')->middleware(['auth', 'admin'])->group(fun
     // Gestión de categorías
     Route::resource('categories', CategoryController::class);
 
-    // Gestión de clientes
-    /* Route::resource('clients', ClientController::class); */
+    // Gestión de órdenes
+    Route::resource('orders', OrderController::class);
+
+    // Ruta para completar órdenes
+    Route::put('orders/{order}/complete', [OrderController::class, 'complete'])->name('orders.complete');
 });

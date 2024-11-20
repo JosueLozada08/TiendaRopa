@@ -9,30 +9,18 @@ class Order extends Model
 {
     use HasFactory;
 
-    // Definimos las columnas que pueden ser asignadas de manera masiva
     protected $fillable = [
-        'user_id', 
-        'status', 
-        'total'
+        'user_id',
+        'order_number',
+        'total',
+        'status',
     ];
 
     /**
-     * Relación con el usuario.
-     * Una orden pertenece a un usuario.
+     * Relación: una orden pertenece a un usuario.
      */
     public function user()
     {
         return $this->belongsTo(User::class);
-    }
-
-    /**
-     * Relación con productos (supone una tabla pivote order_product).
-     * Una orden puede tener muchos productos.
-     */
-    public function products()
-    {
-        return $this->belongsToMany(Product::class, 'order_product')
-                    ->withPivot('quantity')
-                    ->withTimestamps();
     }
 }

@@ -10,28 +10,33 @@ class OrderController extends Controller
 {
     public function index()
     {
-        $orders = Order::all();
+        $orders = Order::with('user')->get(); // Relación con usuario
         return view('admin.orders.index', compact('orders'));
     }
 
-    public function show(Order $order)
+    public function complete(Order $order)
     {
-        return view('admin.orders.show', compact('order'));
-    }
+        if ($order->status !== 'pendiente') {
+            return redirect()->route('admin.orders.index')
+                ->with('error', 'Solo puedes completar órdenes pendientes.');
+        }
 
-    public function update(Request $request, Order $order)
-    {
-        $request->validate([
-            'status' => 'required|string',
-        ]);
+        $order->update(['status' => 'completado']);
 
-        $order->update($request->all());
-        return redirect()->route('admin.orders.index')->with('success', 'Pedido actualizado');
+        return redirect()->route('admin.orders.index')
+            ->with('success', 'Orden completada correctamente.');
     }
 
     public function destroy(Order $order)
     {
+        if ($order->status === 'completado') {
+            return redirect()->route('admin.orders.index')
+                ->with('error', 'No puedes eliminar una orden completada.');
+        }
+
         $order->delete();
-        return redirect()->route('admin.orders.index')->with('success', 'Pedido eliminado');
+
+        return redirect()->route('admin.orders.index')
+            ->with('success', 'Orden eliminada correctamente.');
     }
 }

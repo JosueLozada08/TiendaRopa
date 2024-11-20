@@ -9,17 +9,15 @@ class Product extends Model
 {
     use HasFactory;
 
-    // Definimos las columnas que pueden ser asignadas de manera masiva
     protected $fillable = [
-        'name', 
-        'description', 
-        'price', 
-        'category_id'
+        'name',
+        'description',
+        'price',
+        'category_id',
     ];
 
     /**
-     * Relación con la categoría.
-     * Un producto pertenece a una categoría.
+     * Relación: un producto pertenece a una categoría.
      */
     public function category()
     {
