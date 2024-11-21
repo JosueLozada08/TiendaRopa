@@ -10,7 +10,8 @@
 <body>
     <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
         <div class="container-fluid">
-            <a class="navbar-brand" href="{{ route('dashboard') }}">
+            <!-- Enlace al Dashboard de Admin -->
+            <a class="navbar-brand" href="{{ route('admin.dashboard') }}">
                 <i class="fas fa-store"></i> Tienda Ropa
             </a>
             <button 
@@ -57,11 +58,13 @@
                             </a>
                             <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="userDropdown">
                                 <li>
+                                    <!-- Enlace al Dashboard del Usuario -->
                                     <a class="dropdown-item" href="{{ route('dashboard') }}">
                                         <i class="fas fa-tachometer-alt"></i> Dashboard
                                     </a>
                                 </li>
                                 <li>
+                                    <!-- Formulario para cerrar sesión -->
                                     <form action="{{ route('logout') }}" method="POST" class="d-inline">
                                         @csrf
                                         <button type="submit" class="dropdown-item">
@@ -78,6 +81,7 @@
     </nav>
 
     <div class="container mt-4">
+        <!-- Mensajes de sesión -->
         @if (session('success'))
             <div class="alert alert-success">
                 {{ session('success') }}
@@ -90,10 +94,6 @@
         @endif
         @yield('content')
     </div>
-
-    <footer class="bg-dark text-white text-center py-3 mt-4">
-        <p class="mb-0">&copy; {{ date('Y') }} Tienda Ropa. Todos los derechos reservados.</p>
-    </footer>
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 </body>

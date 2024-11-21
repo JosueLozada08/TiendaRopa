@@ -16,11 +16,15 @@ class Order extends Model
         'status',
     ];
 
-    /**
-     * Relación: una orden pertenece a un usuario.
-     */
     public function user()
     {
         return $this->belongsTo(User::class);
+    }
+
+    public function products()
+    {
+        return $this->belongsToMany(Product::class, 'order_product')
+                    ->withPivot('quantity') // Incluye la cantidad comprada en la relación
+                    ->withTimestamps();
     }
 }

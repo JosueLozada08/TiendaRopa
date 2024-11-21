@@ -15,7 +15,7 @@ class DashboardController extends Controller
         $totalCategories = Category::count();
         $totalOrders = Order::count();
         $totalRevenue = Order::where('status', 'completado')->sum('total');
-    
+
         // Ingresos mensuales del año actual
         $currentYearRevenue = Order::selectRaw('MONTH(created_at) as month, SUM(total) as total')
             ->where('status', 'completado')
@@ -26,7 +26,7 @@ class DashboardController extends Controller
             ->mapWithKeys(function ($item) {
                 return [date('F', mktime(0, 0, 0, $item->month, 1)) => $item->total];
             });
-    
+
         // Ingresos mensuales del año pasado
         $lastYearRevenue = Order::selectRaw('MONTH(created_at) as month, SUM(total) as total')
             ->where('status', 'completado')
@@ -37,15 +37,20 @@ class DashboardController extends Controller
             ->mapWithKeys(function ($item) {
                 return [date('F', mktime(0, 0, 0, $item->month, 1)) => $item->total];
             });
-    
+
+        // Productos con bajo stock
+        $lowStockProducts = Product::where('stock', '<', 5)->get();
+
         return view('admin.dashboard', compact(
             'totalProducts',
             'totalCategories',
             'totalOrders',
             'totalRevenue',
             'currentYearRevenue',
-            'lastYearRevenue'
+            'lastYearRevenue',
+            'lowStockProducts'
         ));
     }
+
     
 }

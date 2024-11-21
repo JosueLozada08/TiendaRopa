@@ -1,11 +1,23 @@
 @extends('layouts.app')
 
-@section('title', 'Dashboard')
+@section('title', 'Dashboard de Administración')
 
 @section('content')
 <div class="container-fluid px-4">
     <h1 class="mt-4">Dashboard de Administración</h1>
     <p class="text-muted">Desde aquí puedes gestionar los módulos principales de la tienda.</p>
+
+    <!-- Alertas de productos con bajo stock -->
+    @if ($lowStockProducts->count() > 0)
+        <div class="alert alert-warning">
+            <h5 class="alert-heading">Productos con bajo stock:</h5>
+            <ul>
+                @foreach ($lowStockProducts as $product)
+                    <li>{{ $product->name }} - Stock: {{ $product->stock }}</li>
+                @endforeach
+            </ul>
+        </div>
+    @endif
 
     <!-- Tarjetas de estadísticas -->
     <div class="row">

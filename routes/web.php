@@ -24,7 +24,7 @@ Route::middleware(['auth'])->group(function () {
 });
 
 // Rutas para administradores (autenticados)
-Route::prefix('admin')->name('admin.')->middleware(['auth'])->group(function () {
+Route::prefix('admin')->name('admin.')->middleware(['auth', 'admin'])->group(function () {
     // Dashboard de administración
     Route::get('/dashboard', [AdminDashboardController::class, 'index'])->name('dashboard');
 
