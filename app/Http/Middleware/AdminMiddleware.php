@@ -8,12 +8,16 @@ use Illuminate\Support\Facades\Auth;
 
 class AdminMiddleware
 {
+    /**
+     * Manejar una solicitud entrante.
+     */
     public function handle(Request $request, Closure $next)
     {
-        if (Auth::check() && Auth::user()->is_admin) {
-            return $next($request);
+        // Verificar si el usuario está autenticado y es administrador
+        if (!Auth::check() || !Auth::user()->is_admin) {
+            return redirect()->route('login')->with('error', 'No tienes acceso a esta sección.');
         }
 
-        return redirect()->route('dashboard')->with('error', 'No tienes acceso a esta sección.');
+        return $next($request);
     }
 }

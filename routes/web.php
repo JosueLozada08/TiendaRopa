@@ -18,12 +18,12 @@ Route::get('/login', [LoginController::class, 'showLoginForm'])->name('login'); 
 Route::post('/login', [LoginController::class, 'login']); // Proceso de inicio de sesión
 Route::post('/logout', [LoginController::class, 'logout'])->name('logout'); // Cierre de sesión
 
-// Dashboard para usuarios regulares
+// Dashboard para usuarios regulares (autenticados)
 Route::middleware(['auth'])->group(function () {
     Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
 });
 
-// Rutas para administradores
+// Rutas para administradores (autenticados)
 Route::prefix('admin')->name('admin.')->middleware(['auth'])->group(function () {
     // Dashboard de administración
     Route::get('/dashboard', [AdminDashboardController::class, 'index'])->name('dashboard');
